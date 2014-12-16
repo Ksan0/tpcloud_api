@@ -1,6 +1,10 @@
 package api.storages;
 
 
+import java.net.HttpURLConnection;
+
+import api.files.FileMetadata;
+
 public abstract class Storage {
 
     public static final String STORAGE_DROPBOX = "STORAGE_DROPBOX";
@@ -17,6 +21,8 @@ public abstract class Storage {
 
     public abstract String getAuthUrl();
     public abstract String getAuthRedirectUrl();
-    public abstract String getMetadataUrl(String accessToken, String path);
+
+    public abstract FileMetadata getMetadata(String accessToken, String path);
+    public abstract byte[] getFile(String accessToken, String path);
 
 }

@@ -22,9 +22,6 @@ public class StorageApiService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         StorageApiIntentParams params = intent.getParcelableExtra(StorageApiFront.class.getName());
-        Log.d("___ServiceOHI", "ww");
-        params.Print();
-
         Object objectParams[] = params.getParams();
 
         Class classParams[] = new Class[objectParams.length];

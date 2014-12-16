@@ -25,12 +25,12 @@ public class MyActivity extends Activity {
         webView = (WebView) findViewById(R.id.webView1);
 
         storageApiFront = new StorageApiFront(this);
-        storageApiFront.oauth2(Storage.STORAGE_YANDEX, webView);
-        /*storageApiFront.getMetadata(
-                Storage.STORAGE_DROPBOX,
-                "",
-                ""
-        );*/
+        //storageApiFront.oauth2(Storage.STORAGE_YANDEX, webView);
+        storageApiFront.getMetadata(
+                Storage.STORAGE_YANDEX,
+                DEV_HELPER.TOKEN_YANDEX,
+                "/"
+        );
     }
 
     @Override

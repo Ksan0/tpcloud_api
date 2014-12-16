@@ -1,6 +1,13 @@
 package api.storages;
 
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import api.files.FileMetadata;
+import api.helpers.HTTPHelper;
+import api.helpers.JSONHelper;
+
 public class StorageDropbox extends Storage {
     private static final String APP_KEY = "601z07rjcs1mydq";
     private static final String AUTH_REDIRECT_URL = "tpdbcloud://localhost";
@@ -14,6 +21,7 @@ public class StorageDropbox extends Storage {
             AUTH_REDIRECT_URL
     );
     private static final String METADATA_URL = "https://api.dropbox.com/1/metadata/auto/%s?access_token=%s";
+    private static final String GET_FILE_URL = "https://api-content.dropbox.com/1/files/auto/%s";
 
 
     @Override
@@ -27,7 +35,30 @@ public class StorageDropbox extends Storage {
     }
 
     @Override
-    public String getMetadataUrl(String accessToken, String path) {
-        return String.format(METADATA_URL, path, accessToken);
+    public FileMetadata getMetadata(String accessToken, String path) {
+        try {
+            URL url = new URL(String.format(METADATA_URL, path, accessToken));
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String response = HTTPHelper.makeRequest(connection);
+            return JSONHelper.parseMetadataDropbox(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
+    @Override
+    public byte[] getFile(String accessToken, String path) {
+        try {
+            URL url = new URL(String.format(METADATA_URL, path, accessToken));
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String response = HTTPHelper.makeRequest(connection);
+            return JSONHelper.parseMetadataDropbox(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }

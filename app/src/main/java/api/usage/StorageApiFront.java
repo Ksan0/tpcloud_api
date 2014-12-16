@@ -90,11 +90,6 @@ public class StorageApiFront {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.d("___redir", oauth2Storage.getAuthRedirectUrl());
-                int xxx = url.indexOf(oauth2Storage.getAuthRedirectUrl());
-                Log.d("___redirI", Integer.toString(xxx));
-                Log.d("___redirU", url);
-
                 if (url.indexOf(oauth2Storage.getAuthRedirectUrl()) != 0) {
                     return false;  // let's load this url
                 }
@@ -121,16 +116,9 @@ public class StorageApiFront {
         webView.loadUrl(oauth2Storage.getAuthUrl());
     }
 
-
     public void getMetadata(String storageName, String accessToken, String path) {
         startService("getMetadata", new Object[] {storageName, accessToken, path});
     }
-
-
-    public void Foo(String x, String y, int z) {
-        startService("Foo", new Object[] {x, y, z});
-    }
-
 
     // *** API METHODS END ***
 }

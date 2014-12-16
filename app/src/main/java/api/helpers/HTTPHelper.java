@@ -1,23 +1,19 @@
 package api.helpers;
 
 
+import android.util.Log;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HTTPHelper {
 
-    public static String makeRequest(String url, String method) {
-        HttpURLConnection connection = null;
+    public static String makeRequest(HttpURLConnection connection) {
 
         try {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            URL requestURL = new URL(url);
-            connection = (HttpURLConnection) requestURL.openConnection();
-            connection.setRequestMethod(method);
             connection.connect();
-
+            StringBuilder stringBuilder = new StringBuilder();
             InputStream inputStream = connection.getInputStream();
             byte buffer[] = new byte[1024];
             int read;
@@ -27,13 +23,14 @@ public class HTTPHelper {
 
             return stringBuilder.toString();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
+        } finally {
+            connection.disconnect();
         }
-        finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+
     }
+
+
 
 }

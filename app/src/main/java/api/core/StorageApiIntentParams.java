@@ -59,10 +59,6 @@ public class StorageApiIntentParams implements Parcelable {
         return params.toArray();
     }
 
-    public void addParam(Object param) {
-        this.params.add(param);
-    }
-
     public void Print() {
         Log.d("____IntentPrintMN", methodName);
 
