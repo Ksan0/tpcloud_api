@@ -2,6 +2,7 @@ package com.mycompany.ksan0.tpcloud;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -15,8 +16,6 @@ public class MyActivity extends Activity {
     StorageApiFront storageApiFront;
     WebView webView;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,11 +25,12 @@ public class MyActivity extends Activity {
 
         storageApiFront = new StorageApiFront(this);
         //storageApiFront.oauth2(Storage.STORAGE_YANDEX, webView);
-        storageApiFront.getMetadata(
+        /*storageApiFront.getMetadata(
                 Storage.STORAGE_YANDEX,
                 DEV_HELPER.TOKEN_YANDEX,
                 "/"
-        );
+        );*/
+        storageApiFront.getFile(Storage.STORAGE_YANDEX, DEV_HELPER.TOKEN_YANDEX, "/www", getFilesDir().getAbsolutePath());
     }
 
     @Override

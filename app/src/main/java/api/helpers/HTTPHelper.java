@@ -4,8 +4,8 @@ package api.helpers;
 import android.util.Log;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class HTTPHelper {
 
@@ -31,6 +31,24 @@ public class HTTPHelper {
 
     }
 
+
+    public static void makeRequest(HttpURLConnection connection, OutputStream resultStream) {
+
+        try {
+            connection.connect();
+            InputStream inputStream = connection.getInputStream();
+            byte buffer[] = new byte[1024];
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                resultStream.write(buffer, 0, read);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connection.disconnect();
+        }
+
+    }
 
 
 }

@@ -3,6 +3,7 @@ package api.storages;
 
 import android.util.Log;
 
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -24,7 +25,10 @@ public class StorageYandex extends Storage {
     private static final String METADATA_URL  = "https://cloud-api.yandex.net/v1/disk/resources?" +
                                                 "path=%s&" +
                                                 "limit=10000";
-    
+
+    private static final String GET_FILE_URL =  "https://cloud-api.yandex.net/v1/disk/resources/download?" +
+                                                "path=%s";
+
     @Override
     public String getAuthUrl() {
         return AUTH_URL;
@@ -47,6 +51,29 @@ public class StorageYandex extends Storage {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public boolean getFile(String accessToken, String path, OutputStream outputStream) {
+        try {
+            URL url = new URL(String.format(GET_FILE_URL, path));
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("Authorization", String.format("OAuth %s", accessToken));
+
+            String getFileResponse = HTTPHelper.makeRequest(connection);
+            String getFileRealUrl = JSONHelper.parseGetFileResponseYandex(getFileResponse);
+
+            url = new URL(getFileRealUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("Authorization", String.format("OAuth %s", accessToken));
+
+            HTTPHelper.makeRequest(connection, outputStream);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

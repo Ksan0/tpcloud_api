@@ -10,7 +10,23 @@ import org.json.JSONObject;
 import api.files.FileMetadata;
 import api.storages.Storage;
 
+
+// it isn't copy-paste in code
+// because clouds can use different architectures
+
+
 public class JSONHelper {
+
+    public static String parseGetFileResponseYandex(String str) {
+        try {
+            JSONObject json = new JSONObject(str);
+            return json.getString("href");
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     public static FileMetadata parseMetadataDropbox(String str) {
         try {
@@ -25,6 +41,7 @@ public class JSONHelper {
                     JSONObject contentsJson = contentsArray.getJSONObject(i);
                     FileMetadata contentsFile = new FileMetadata();
                     fillFileMetadataDropbox(contentsFile, contentsJson);
+                    file.addContainFile(contentsFile);
                 }
             }
 
@@ -44,11 +61,14 @@ public class JSONHelper {
             fillFileMetadataYandex(file, json);
 
             if (json.has("_embedded")) {
-                JSONArray contentsArray = json.getJSONArray("_embedded");
+                JSONObject embedded = json.getJSONObject("_embedded");
+
+                JSONArray contentsArray = embedded.getJSONArray("items");
                 for (int i = 0; i < contentsArray.length(); i++) {
                     JSONObject contentsJson = contentsArray.getJSONObject(i);
                     FileMetadata contentsFile = new FileMetadata();
                     fillFileMetadataYandex(contentsFile, contentsJson);
+                    file.addContainFile(contentsFile);
                 }
             }
 
@@ -67,11 +87,11 @@ public class JSONHelper {
 
         file.setStoragePath(json.getString("path"));
 
-        if (json.has("size")) {
-            file.setSize(json.getLong("size"));
+        if (json.has("bytes")) {
+            file.setSize(json.getLong("bytes"));
         }
 
-        file.setDir(json.getString("type").equals("dir"));
+        file.setDir(json.getBoolean("is_dir"));
 
         if (json.has("mime_type")) {
             file.setMimeType(json.getString("mime_type"));
@@ -86,11 +106,11 @@ public class JSONHelper {
 
         file.setStoragePath(json.getString("path"));
 
-        if (json.has("bytes")) {
-            file.setSize(json.getLong("bytes"));
+        if (json.has("size")) {
+            file.setSize(json.getLong("size"));
         }
 
-        file.setDir(json.getBoolean("is_dir"));
+        file.setDir(json.getString("type").equals("dir"));
 
         if (json.has("mime_type")) {
             file.setMimeType(json.getString("mime_type"));

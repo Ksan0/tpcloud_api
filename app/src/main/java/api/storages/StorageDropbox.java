@@ -1,6 +1,9 @@
 package api.storages;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -21,7 +24,7 @@ public class StorageDropbox extends Storage {
             AUTH_REDIRECT_URL
     );
     private static final String METADATA_URL = "https://api.dropbox.com/1/metadata/auto/%s?access_token=%s";
-    private static final String GET_FILE_URL = "https://api-content.dropbox.com/1/files/auto/%s";
+    private static final String GET_FILE_URL = "https://api-content.dropbox.com/1/files/auto/%s?access_token=%s";
 
 
     @Override
@@ -48,15 +51,17 @@ public class StorageDropbox extends Storage {
     }
 
     @Override
-    public byte[] getFile(String accessToken, String path) {
+    public boolean getFile(String accessToken, String path, OutputStream outputStream) {
         try {
-            URL url = new URL(String.format(METADATA_URL, path, accessToken));
+            URL url = new URL(String.format(GET_FILE_URL, path, accessToken));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            String response = HTTPHelper.makeRequest(connection);
-            return JSONHelper.parseMetadataDropbox(response);
+
+            HTTPHelper.makeRequest(connection, outputStream);
+
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 

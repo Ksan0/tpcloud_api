@@ -1,6 +1,7 @@
 package api.storages;
 
 
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
 import api.files.FileMetadata;
@@ -23,6 +24,6 @@ public abstract class Storage {
     public abstract String getAuthRedirectUrl();
 
     public abstract FileMetadata getMetadata(String accessToken, String path);
-    public abstract byte[] getFile(String accessToken, String path);
+    public abstract boolean getFile(String accessToken, String path, OutputStream stream);
 
 }

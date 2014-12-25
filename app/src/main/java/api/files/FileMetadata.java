@@ -1,10 +1,11 @@
 package api.files;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class FileMetadata {
+public class FileMetadata implements Serializable {
     private String storageName;
     private String name;
     private String storagePath;
@@ -62,5 +63,9 @@ public class FileMetadata {
 
     public void addContainFile(FileMetadata file) {
         containFiles.add(file);
+    }
+
+    public ArrayList<FileMetadata> getContainFiles() {
+        return containFiles;
     }
 }

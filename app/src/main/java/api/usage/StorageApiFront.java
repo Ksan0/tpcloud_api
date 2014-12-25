@@ -83,9 +83,8 @@ public class StorageApiFront {
 
     // *** API METHODS BEGIN ***
 
-    private Storage oauth2Storage;
-    public void oauth2(String storageName, WebView webView) {
-        oauth2Storage = Storage.create(storageName);
+    public void oauth2(final String storageName, WebView webView) {
+        final Storage oauth2Storage = Storage.create(storageName);
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -105,7 +104,7 @@ public class StorageApiFront {
                     return false;
                 }
 
-                storageApiCallback.oauth2(oauth2Storage, getParameters.get("access_token"));
+                storageApiCallback.oauth2(storageName, getParameters.get("access_token"));
 
                 return true;
             }
@@ -118,6 +117,10 @@ public class StorageApiFront {
 
     public void getMetadata(String storageName, String accessToken, String path) {
         startService("getMetadata", new Object[] {storageName, accessToken, path});
+    }
+
+    public void getFile(String storageName, String accessToken, String path, String dirName) {
+        startService("getFile", new Object[] {storageName, accessToken, path, dirName});
     }
 
     // *** API METHODS END ***
