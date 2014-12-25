@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import api.files.FileMetadata;
 import api.helpers.HTTPHelper;
@@ -28,6 +29,11 @@ public class StorageDropbox extends Storage {
 
 
     @Override
+    public String getHumanReadName() {
+        return "dropbox";
+    }
+
+    @Override
     public String getAuthUrl() {
         return AUTH_URL;
     }
@@ -40,7 +46,7 @@ public class StorageDropbox extends Storage {
     @Override
     public FileMetadata getMetadata(String accessToken, String path) {
         try {
-            URL url = new URL(String.format(METADATA_URL, path, accessToken));
+            URL url = new URL(String.format(METADATA_URL, URLEncoder.encode(path, "UTF-8"), accessToken));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String response = HTTPHelper.makeRequest(connection);
             return JSONHelper.parseMetadataDropbox(response);
@@ -53,7 +59,7 @@ public class StorageDropbox extends Storage {
     @Override
     public boolean getFile(String accessToken, String path, OutputStream outputStream) {
         try {
-            URL url = new URL(String.format(GET_FILE_URL, path, accessToken));
+            URL url = new URL(String.format(GET_FILE_URL, URLEncoder.encode(path, "UTF-8"), accessToken));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             HTTPHelper.makeRequest(connection, outputStream);

@@ -2,10 +2,13 @@ package com.mycompany.ksan0.tpcloud;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+
+import java.io.File;
 
 import api.storages.Storage;
 import api.usage.StorageApiFront;
@@ -21,16 +24,23 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
+        // THIS FOLDERS MUST BE ALIVE
+        new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/tpcloud_api").mkdir();
+        new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/tpcloud_api/" + Storage.create(Storage.STORAGE_DROPBOX).getHumanReadName()).mkdir();
+        new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/tpcloud_api/" + Storage.create(Storage.STORAGE_YANDEX).getHumanReadName()).mkdir();
+
         webView = (WebView) findViewById(R.id.webView1);
 
         storageApiFront = new StorageApiFront(this);
         //storageApiFront.oauth2(Storage.STORAGE_YANDEX, webView);
         /*storageApiFront.getMetadata(
-                Storage.STORAGE_YANDEX,
-                DEV_HELPER.TOKEN_YANDEX,
-                "/"
+                Storage.STORAGE_DROPBOX,
+                DEV_HELPER.TOKEN_DROPBOX,
+                "/rating.sql"
         );*/
-        storageApiFront.getFile(Storage.STORAGE_YANDEX, DEV_HELPER.TOKEN_YANDEX, "/www", getFilesDir().getAbsolutePath());
+
+        storageApiFront.getFile(Storage.STORAGE_DROPBOX, DEV_HELPER.TOKEN_DROPBOX, "/Projects/cimg.ru/Статья.doc");
+//        storageApiFront.getFile(Storage.STORAGE_DROPBOX, DEV_HELPER.TOKEN_DROPBOX, "/microWorld/microWorld_redactor.cpp");
     }
 
     @Override

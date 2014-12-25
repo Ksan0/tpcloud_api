@@ -8,6 +8,8 @@ import api.files.FileMetadata;
 
 public abstract class Storage {
 
+    public static final String EXTERNAL_STORAGE_NAME = "tpcloud_api";
+
     public static final String STORAGE_DROPBOX = "STORAGE_DROPBOX";
     public static final String STORAGE_YANDEX = "STORAGE_YANDEX";
 
@@ -19,6 +21,7 @@ public abstract class Storage {
         return null;
     }
 
+    public abstract String getHumanReadName();
 
     public abstract String getAuthUrl();
     public abstract String getAuthRedirectUrl();

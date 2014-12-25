@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+
 import api.files.FileMetadata;
 import api.storages.Storage;
 
@@ -96,6 +98,10 @@ public class JSONHelper {
         if (json.has("mime_type")) {
             file.setMimeType(json.getString("mime_type"));
         }
+
+        if (json.has("modified")) {
+            file.setLastModified(json.getString("modified"));
+        }
     }
 
 
@@ -114,6 +120,10 @@ public class JSONHelper {
 
         if (json.has("mime_type")) {
             file.setMimeType(json.getString("mime_type"));
+        }
+
+        if (json.has("modified")) {
+            file.setLastModified(json.getString("modified"));
         }
     }
 }

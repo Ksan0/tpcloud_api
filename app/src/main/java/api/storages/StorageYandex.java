@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import api.files.FileMetadata;
 import api.helpers.HTTPHelper;
@@ -30,6 +31,11 @@ public class StorageYandex extends Storage {
                                                 "path=%s";
 
     @Override
+    public String getHumanReadName() {
+        return "yandex";
+    }
+
+    @Override
     public String getAuthUrl() {
         return AUTH_URL;
     }
@@ -42,7 +48,7 @@ public class StorageYandex extends Storage {
     @Override
     public FileMetadata getMetadata(String accessToken, String path) {
         try {
-            URL url = new URL(String.format(METADATA_URL, path));
+            URL url = new URL(String.format(METADATA_URL, URLEncoder.encode(path, "UTF-8")));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Authorization", String.format("OAuth %s", accessToken));
 
@@ -57,7 +63,7 @@ public class StorageYandex extends Storage {
     @Override
     public boolean getFile(String accessToken, String path, OutputStream outputStream) {
         try {
-            URL url = new URL(String.format(GET_FILE_URL, path));
+            URL url = new URL(String.format(GET_FILE_URL, URLEncoder.encode(path, "UTF-8")));
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Authorization", String.format("OAuth %s", accessToken));
 

@@ -119,8 +119,8 @@ public class StorageApiFront {
         startService("getMetadata", new Object[] {storageName, accessToken, path});
     }
 
-    public void getFile(String storageName, String accessToken, String path, String dirName) {
-        startService("getFile", new Object[] {storageName, accessToken, path, dirName});
+    public void getFile(String storageName, String accessToken, String path) {
+        startService("getFile", new Object[] {storageName, accessToken, path});
     }
 
     // *** API METHODS END ***

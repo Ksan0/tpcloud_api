@@ -12,6 +12,7 @@ public class FileMetadata implements Serializable {
     private boolean isDir;
     private long size;
     private String mimeType;
+    private String lastModified;  // you can use it like hash
 
     private ArrayList<FileMetadata> containFiles = new ArrayList<FileMetadata>();
 
@@ -67,5 +68,13 @@ public class FileMetadata implements Serializable {
 
     public ArrayList<FileMetadata> getContainFiles() {
         return containFiles;
+    }
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
 }
