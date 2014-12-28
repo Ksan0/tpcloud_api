@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import api.files.FileMetadata;
@@ -41,13 +42,37 @@ public class StorageApiBack {
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(currentPath);
-            storage.getFile(accessToken, path, fileOutputStream);
+            boolean resStatus = storage.getFile(accessToken, path, fileOutputStream);
             fileOutputStream.close();
-            return new Object[] {storageName, path, currentPath};
+
+            if (resStatus) {
+                return new Object[]{storageName, path, currentPath};
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return new Object[] {null, null, null};
+
         }
+
+        return new Object[] {storageName, null, null};
+    }
+
+    public Object[] putFile(String storageName, String accessToken, String putPath, String filePath) {
+        Storage storage = Storage.create(storageName);
+
+        try {
+            File file = new File(filePath);
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            boolean resStatus = storage.putFile(accessToken, putPath, fileInputStream, file.length());
+            fileInputStream.close();
+
+            if (resStatus) {
+                return new Object[]{storageName, putPath, filePath};
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new Object[] {storageName, null, null};
     }
 
 }

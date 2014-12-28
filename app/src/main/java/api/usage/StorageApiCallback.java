@@ -39,4 +39,7 @@ public class StorageApiCallback {
         }
     }
 
+    public void putFile(String storageName, String webPath, String filePath) {
+
+    }
 }

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 
 import api.storages.Storage;
 import api.usage.StorageApiFront;
@@ -23,6 +24,12 @@ public class MyActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+        try {
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z").parse("Wed, 26 Mar 2014 18:32:02 +0000");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         // THIS FOLDERS MUST BE ALIVE
         new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/tpcloud_api").mkdir();
@@ -39,8 +46,10 @@ public class MyActivity extends Activity {
                 "/rating.sql"
         );*/
 
-        storageApiFront.getFile(Storage.STORAGE_DROPBOX, DEV_HELPER.TOKEN_DROPBOX, "/Projects/cimg.ru/Статья.doc");
+//        storageApiFront.getFile(Storage.STORAGE_DROPBOX, DEV_HELPER.TOKEN_DROPBOX, "/Projects/cimg.ru/Статья.doc");
 //        storageApiFront.getFile(Storage.STORAGE_DROPBOX, DEV_HELPER.TOKEN_DROPBOX, "/microWorld/microWorld_redactor.cpp");
+
+        storageApiFront.putFile(Storage.STORAGE_YANDEX, DEV_HELPER.TOKEN_YANDEX, "qqrt", Environment.getExternalStorageDirectory() + "/zKgfq/spektr.fb2");
     }
 
     @Override

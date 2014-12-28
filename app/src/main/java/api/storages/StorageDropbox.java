@@ -1,8 +1,11 @@
 package api.storages;
 
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -26,7 +29,7 @@ public class StorageDropbox extends Storage {
     );
     private static final String METADATA_URL = "https://api.dropbox.com/1/metadata/auto/%s?access_token=%s";
     private static final String GET_FILE_URL = "https://api-content.dropbox.com/1/files/auto/%s?access_token=%s";
-
+    private static final String PUT_FILE_URL = "https://api-content.dropbox.com/1/files_put/auto/%s?overwrite=true&access_token=%s";
 
     @Override
     public String getHumanReadName() {
@@ -63,6 +66,24 @@ public class StorageDropbox extends Storage {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             HTTPHelper.makeRequest(connection, outputStream);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean putFile(String accessToken, String path, InputStream stream, long streamLength) {
+        try {
+            URL url = new URL(String.format(PUT_FILE_URL, URLEncoder.encode(path, "UTF-8"), accessToken));
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Content-Length", Long.toString(streamLength));
+            connection.setRequestProperty("Content-Type", "*/*");
+
+            HTTPHelper.makeRequest(connection, stream);
 
             return true;
         } catch (Exception e) {

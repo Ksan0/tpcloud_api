@@ -123,5 +123,9 @@ public class StorageApiFront {
         startService("getFile", new Object[] {storageName, accessToken, path});
     }
 
+    public void putFile(String storageName, String accessToken, String putPath, String filePath) {
+        startService("putFile", new Object[] {storageName, accessToken, putPath, filePath});
+    }
+
     // *** API METHODS END ***
 }

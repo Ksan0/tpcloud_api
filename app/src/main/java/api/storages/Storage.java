@@ -1,6 +1,7 @@
 package api.storages;
 
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
@@ -28,5 +29,6 @@ public abstract class Storage {
 
     public abstract FileMetadata getMetadata(String accessToken, String path);
     public abstract boolean getFile(String accessToken, String path, OutputStream stream);
+    public abstract boolean putFile(String accessToken, String path, InputStream stream, long streamLength);
 
 }
